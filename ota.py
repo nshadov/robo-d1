@@ -15,20 +15,20 @@ class OTAUpdater:
         self.password = password
         self.repo_url = repo_url
         if "www.github.com" in self.repo_url :
-            print(f"Updating {repo_url} to raw.githubusercontent")
+            print(f"[!] Updating {repo_url} to raw.githubusercontent")
             self.repo_url = self.repo_url.replace("www.github","raw.githubusercontent")
         elif "github.com" in self.repo_url:
-            print(f"Updating {repo_url} to raw.githubusercontent'")
+            print(f"[!] Updating {repo_url} to raw.githubusercontent'")
             self.repo_url = self.repo_url.replace("github","raw.githubusercontent")            
         self.version_url = self.repo_url + '/version.json'
-        print(f"version url is: {self.version_url}")
+        print(f"[i] Version url is: {self.version_url}")
         self.firmware_url = self.repo_url + '/' + filename
 
         # get the current version (stored in version.json)
         if 'version.json' in os.listdir():    
             with open('version.json') as f:
                 self.current_version = int(json.load(f)['version'])
-            print(f"Current device firmware version is '{self.current_version}'")
+            print(f"[i] Current device firmware version is '{self.current_version}'")
 
         else:
             self.current_version = 0
@@ -45,7 +45,7 @@ class OTAUpdater:
         while not sta_if.isconnected():
             print('.', end="")
             sleep(0.25)
-        print(f'Connected to WiFi, IP is: {sta_if.ifconfig()[0]}')
+        print(f'[+] Connected to WiFi, IP is: {sta_if.ifconfig()[0]}')
         
     def fetch_latest_code(self)->bool:
         """ Fetch the latest code from the repo, returns False if not found."""
@@ -53,14 +53,14 @@ class OTAUpdater:
         # Fetch the latest code from the repo.
         response = urequests.get(self.firmware_url)
         if response.status_code == 200:
-            print(f'Fetched latest firmware code, status: {response.status_code}, -  {response.text}')
+            print(f'[#] Fetched latest firmware code, status: {response.status_code}, -  {response.text}')
     
             # Save the fetched code to memory
             self.latest_code = response.text
             return True
         
         elif response.status_code == 404:
-            print(f'Firmware not found - {self.firmware_url}.')
+            print(f'[!] Firmware not found - {self.firmware_url}.')
             return False
 
     def update_no_reset(self):
@@ -86,13 +86,13 @@ class OTAUpdater:
     def update_and_reset(self):
         """ Update the code and reset the device."""
 
-        print(f"Updating device... (Renaming latest_code.py to {self.filename})", end="")
+        print(f"[#] Updating device... (Renaming latest_code.py to {self.filename})", end="")
 
         # Overwrite the old code.
         os.rename('latest_code.py', self.filename)  
 
         # Restart the device to run the new code.
-        print('Restarting device...')
+        print('[i] Restarting device...')
         machine.reset()  # Reset the device to run the new code.
         
     def check_for_updates(self):
@@ -101,23 +101,23 @@ class OTAUpdater:
         # Connect to Wi-Fi
         self.connect_wifi()
 
-        print(f'Checking for latest version... on {self.version_url}')
+        print(f'[+] Checking for latest version... on {self.version_url}')
         response = urequests.get(self.version_url)
         
         data = json.loads(response.text)
         
-        print(f"data is: {data}, url is: {self.version_url}")
-        print(f"data version is: {data['version']}")
+        print(f"[i] Local version is: {data}, url is: {self.version_url}")
+        print(f"[i] Local version is: {data['version']}")
         # Turn list to dict using dictionary comprehension
 #         my_dict = {data[i]: data[i + 1] for i in range(0, len(data), 2)}
         
         self.latest_version = int(data['version'])
-        print(f'latest version is: {self.latest_version}')
+        print(f'[i] Latest version is: {self.latest_version}')
         
         # compare versions
         newer_version_available = True if self.current_version < self.latest_version else False
         
-        print(f'Newer version available: {newer_version_available}')    
+        print(f'[i] Newer version available: {newer_version_available}')    
         return newer_version_available
     
     def download_and_install_update_if_available(self):
@@ -127,7 +127,7 @@ class OTAUpdater:
                 self.update_no_reset() 
                 self.update_and_reset() 
         else:
-            print('No new updates available.')
+            print('[i] No new updates available.')
 
     def disconnect(self):
         sta_if = network.WLAN(network.STA_IF)
