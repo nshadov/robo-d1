@@ -1,10 +1,12 @@
 import time
 from machine import Pin
 from machine import I2C
+from lolin_i2c_motor import Lolin_I2C_Motor
 
 led = Pin(2, Pin.OUT)
 sclPin = Pin(5, Pin.OUT)
 sdaPin = Pin(4, Pin.OUT)
+I2C_MOTOR_ID = 48
 
 class Main:
     def __init__(self):
@@ -12,9 +14,14 @@ class Main:
     
     def init_i2c(self):
         print("[+] Initializing I2C ...")
-        self.i2c = I2C(freq=9600, scl=sclPin, sda=sdaPin)
+        self.i2c = I2C(freq=9600, timeout=5000, scl=sclPin, sda=sdaPin)
         devices = self.i2c.scan()
-        print(f"[+] I2C devices: {devices}") 
+        if I2C_MOTOR_ID in devices:
+            self.motor = Lolin_I2C_Motor(I2C_MOTOR_ID)
+            print(f"[+] I2C motor found: {self.motor}")
+            print("Status:"+str(self.motor.get_status(self.i2c)))
+        else:
+            self.motor = None
     
     def run(self):
         print("[+] Initialization complete.")
