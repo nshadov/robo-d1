@@ -16,15 +16,5 @@ firmware_url = "https://raw.githubusercontent.com/nshadov/robo-d1/main"
 ota_updater = OTAUpdater(SSID, PASSWORD, firmware_url, "main.py")
 ota_updater.download_and_install_update_if_available()
 
-
-import time
-from machine import Pin
-
-led = Pin(2, Pin.OUT)
-
-while True:
-    if led.value():
-        led.off()
-    else:
-        led.on()
-    time.sleep_ms(250)
+from main import main
+main()
