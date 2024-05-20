@@ -22,7 +22,7 @@ class OTAUpdater:
             self.repo_url = self.repo_url.replace("github","raw.githubusercontent")            
         self.version_url = self.repo_url + '/version.json'
         print(f"version url is: {self.version_url}")
-        self.firmware_url = self.repo_url + 'master/' + filename
+        self.firmware_url = self.repo_url + '/' + filename
 
         # get the current version (stored in version.json)
         if 'version.json' in os.listdir():    
