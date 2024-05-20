@@ -22,6 +22,6 @@ ota_updater.disconnect()
 
 led.off()
 
-import Main
+from main import Main
 m = Main()
 m.run()

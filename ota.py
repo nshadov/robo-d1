@@ -128,9 +128,9 @@ class OTAUpdater:
                 self.update_and_reset() 
         else:
             print('No new updates available.')
-			
-	def disconnect(self):
-		sta_if = network.WLAN(network.STA_IF)
-		if sta_if.isconnected():
-			sta_if.disconnect()
-			sta_if.active(False)
+
+    def disconnect(self):
+        sta_if = network.WLAN(network.STA_IF)
+        if sta_if.isconnected():
+            sta_if.disconnect()
+            sta_if.active(False)
