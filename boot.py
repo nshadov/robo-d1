@@ -11,7 +11,7 @@ gc.collect()
 from ota import OTAUpdater
 from WIFI_CONFIG import SSID, PASSWORD
 
-firmware_url = "https://raw.githubusercontent.com/nshadov/robo-d1/main"
+firmware_url = "https://raw.githubusercontent.com/nshadov/robo-d1/master"
 
 ota_updater = OTAUpdater(SSID, PASSWORD, firmware_url, "main.py")
 ota_updater.download_and_install_update_if_available()
