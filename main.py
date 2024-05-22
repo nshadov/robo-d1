@@ -1,7 +1,7 @@
 import time
 from machine import Pin
 from machine import I2C
-import lolin_i2c_motor
+import lolin_i2c_motor as lm
 
 
 led = Pin(2, Pin.OUT)
@@ -11,6 +11,7 @@ I2C_MOTOR_ID = 48
 
 class Main:
     def __init__(self):
+        self.motor = None
         self.init_i2c()
     
     def init_i2c(self):
@@ -18,17 +19,19 @@ class Main:
         self.i2c = I2C(freq=9600, timeout=5000, scl=sclPin, sda=sdaPin)
         devices = self.i2c.scan()
         if I2C_MOTOR_ID in devices:
-            self.motor = lolin_i2c_motor.Lolin_I2C_Motor(self.i2c, I2C_MOTOR_ID)
+            self.motor = lm.Lolin_I2C_Motor(self.i2c, I2C_MOTOR_ID)
             print(f"[+] I2C motor found: {self.motor}")
             print("Status:"+str(self.motor.get_status()))
-        else:
-            self.motor = None
+            self.motor.change_freq(lm.MOTOR_CH_BOTH, 1000)
+            self.motor.change_status(lm.MOTOR_CH_A, lm.MOTOR_STATUS_CW);
     
     def run(self):
         print("[+] Initialization complete.")
         while True:
             if led.value():
                 led.off()
+                self.motor.change_duty(lm.MOTOR_CH_A, 20);
             else:
                 led.on()
-            time.sleep_ms(250)
+                self.motor.change_duty(lm.MOTOR_CH_A, 50);
+            time.sleep_ms(500)

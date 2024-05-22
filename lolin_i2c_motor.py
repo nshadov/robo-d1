@@ -1,12 +1,12 @@
 # Built based on https://github.com/wemos/LOLIN_I2C_MOTOR_Library/blob/master/src/LOLIN_I2C_MOTOR.cpp
 
-MOTOR_CH_A = b'0'
-MOTOR_CH_B = b'1'
-MOTOR_CH_BOTH = b'2'
+MOTOR_CH_A = 0x00
+MOTOR_CH_B = 0x01
+MOTOR_CH_BOTH = 0x02
 
-MOTOR_STATUS_STOP = b'0'
-MOTOR_STATUS_CCW = b'1'
-MOTOR_STATUS_CW = b'2'
+MOTOR_STATUS_STOP = 0x00
+MOTOR_STATUS_CCW = 0x01
+MOTOR_STATUS_CW = 0x02
 
 '''
   motor.changeFreq(MOTOR_CH_BOTH, 1000); //Change A & B 's Frequency to 1000Hz.
@@ -59,4 +59,4 @@ class Lolin_I2C_Motor:
         self._i2c.writeto(self._address, data)
         
     def __str__(self):
-        return "{'i2c':"+str(self.id)+"}"
+        return "{'i2c':"+str(self._address)+"}"
