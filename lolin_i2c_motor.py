@@ -1,5 +1,7 @@
 # Built based on https://github.com/wemos/LOLIN_I2C_MOTOR_Library/blob/master/src/LOLIN_I2C_MOTOR.cpp
 
+import time
+
 MOTOR_CH_A = 0x00
 MOTOR_CH_B = 0x01
 MOTOR_CH_BOTH = 0x02
