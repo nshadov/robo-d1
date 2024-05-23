@@ -31,20 +31,24 @@ class Lolin_I2C_Motor:
         data = bytearray([0x05, channel])
         data.extend(freq.to_bytes(3, 'little'))
         self._i2c.writeto(self._address, data)
+        time.sleep_ms(50)
     
     def change_duty(self, channel, duty):
         data = bytearray([0x06, channel])
         duty_int = int(duty * 100)
         data.extend(duty_int.to_bytes(2, 'little'))
         self._i2c.writeto(self._address, data)
+        time.sleep_ms(50)
     
     def change_status(self, channel, status):
         data = bytearray([0x04, channel, status])
         self._i2c.writeto(self._address, data)
+        time.sleep_ms(50)
     
     def get_status(self):
         data = bytearray([0x01])
         self._i2c.writeto(self._address, data)
+        time.sleep_ms(50)
         data = self._i2c.readfrom(self._address, 2)
         product_id = data[0]
         version = data[1]
@@ -53,10 +57,13 @@ class Lolin_I2C_Motor:
     def reset(self):
         data = bytearray([0x02])
         self._i2c.writeto(self._address, data)
+        time.sleep_ms(50)
+
 
     def change_address(self, address):
         data = bytearray([0x03, address])
         self._i2c.writeto(self._address, data)
+        time.sleep_ms(50)
         
     def __str__(self):
         return "{'i2c':"+str(self._address)+"}"

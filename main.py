@@ -23,7 +23,7 @@ class Main:
             print(f"[+] I2C motor found: {self.motor}")
             print("Status:"+str(self.motor.get_status()))
             self.motor.change_freq(lm.MOTOR_CH_BOTH, 1000)
-            self.motor.change_status(lm.MOTOR_CH_A, lm.MOTOR_STATUS_CW);
+            self.motor.change_status(lm.MOTOR_CH_BOTH, lm.MOTOR_STATUS_CW);
     
     def run(self):
         print("[+] Initialization complete.")
