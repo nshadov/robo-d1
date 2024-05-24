@@ -30,8 +30,8 @@ class Main:
         while True:
             if led.value():
                 led.off()
-                self.motor.change_duty(lm.MOTOR_CH_A, 20);
+                self.motor.change_duty(lm.MOTOR_CH_BOTH, 30);
             else:
                 led.on()
-                self.motor.change_duty(lm.MOTOR_CH_A, 50);
+                self.motor.change_duty(lm.MOTOR_CH_BOTH, 80);
             time.sleep_ms(500)
