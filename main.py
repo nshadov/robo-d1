@@ -1,6 +1,7 @@
 import time
 from machine import Pin
 from machine import I2C
+from random import randint
 import lolin_i2c_motor as lm
 
 
@@ -30,8 +31,10 @@ class Main:
         while True:
             if led.value():
                 led.off()
-                self.motor.change_duty(lm.MOTOR_CH_BOTH, 30);
+                self.motor.change_duty(lm.MOTOR_CH_A, randint(0, 100));
+                self.motor.change_duty(lm.MOTOR_CH_B, randint(0, 100));
             else:
                 led.on()
-                self.motor.change_duty(lm.MOTOR_CH_BOTH, 80);
-            time.sleep_ms(500)
+                self.motor.change_duty(lm.MOTOR_CH_A, randint(0, 100));
+                self.motor.change_duty(lm.MOTOR_CH_B, randint(0, 100));
+            time.sleep_ms(500 + randint(0, 500))
